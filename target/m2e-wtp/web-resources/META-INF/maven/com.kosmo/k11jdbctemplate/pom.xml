@@ -134,7 +134,7 @@
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-jdbc</artifactId>
 			<version>4.1.4.RELEASE</version>
-		</dependency>
+		</dependency>  
 		     
 	</dependencies>
     <build>
