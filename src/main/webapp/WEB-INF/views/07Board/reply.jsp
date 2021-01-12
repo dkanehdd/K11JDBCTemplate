@@ -39,9 +39,12 @@
 	<form name="writeFrm" method="post" 
 		action="./replyAction.do" 
 		onsubmit="return checkValidate(this);">
+	<!-- 답변글 처리를 위해서는 원본글에대한 idx값과 추가적으로
+	group, step, indent값이 필요하다. 해당값을 통해 간련있는
+	게시물을 하나의 그룹으로 묶어주고, 그룹내에서 한번 더 정렬을 하게 된다. -->
 	<input type="hid den" name="idx" value="${replyRow.idx }" />
 	<input type="hid den" name="nowPage" value="${param.nowPage }" />
-	<input type="hid den" name="broup" value="${replyRow.bgroup }" />
+	<input type="hid den" name="bgroup" value="${replyRow.bgroup }" />
 	<input type="hid den" name="bstep" value="${replyRow.bstep }" />
 	<input type="hid den" name="bindent" value="${replyRow.bindent }" />
 	<table border=1 width=800>

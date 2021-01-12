@@ -20,12 +20,13 @@ public class ReplyCommand implements BbsCommandImpl{
 		String idx = req.getParameter("idx");
 		
 		JDBCTemplateDAO dao = new JDBCTemplateDAO();
-		
+		//기존 게시물의 내용을 가져온다.
 		SpringBbsDTO dto = dao.view(idx);
-		
+		//제목앞에 답변글이라는 표현으로 [RE]를 추가한다.
 		dto.setTitle("[RE]"+dto.getTitle());
+		//내용에도 원본들을 표현하기 위해 문자열을 추가한다.
 		dto.setContents("\n\r\n\r---[원본글]---\n\r"+dto.getContents());
-		
+		//모델객체에 dto저장
 		model.addAttribute("replyRow", dto);
 	}
 }

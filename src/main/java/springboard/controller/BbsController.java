@@ -169,10 +169,10 @@ public class BbsController {
 		model.addAttribute("idx", req.getParameter("idx"));
 		return "07Board/reply";
 	}
-	
+	//답변글 입력하기
 	@RequestMapping("/board/replyAction.do")
 	public String replyAction(HttpServletRequest req, Model model, SpringBbsDTO springBbsDTO) {
-		
+		//커맨드 객체를 통해 입력폼에서 전송한 내용을 한번에 저장
 		model.addAttribute("springBbsDTO", springBbsDTO);
 		
 		model.addAttribute("req", req);

@@ -44,26 +44,30 @@ public class ListCommand implements BbsCommandImpl{
 			paramMap.put("Word", searchWord);
 		}
 		
+		//전체 레코드 수 카운트 하기
+		int totalRecordCount = dao.getTotalCount(paramMap);
+		//////////////////페이지처리 start///////////////////
+		
 		int pageSize = Integer.parseInt(
 				EnvFileReader.getValue("SpringBbsInit.properties", 
 						"springBoard.pageSize"));
 		int blockPage = Integer.parseInt(
 				EnvFileReader.getValue("SpringBbsInit.properties",
 						"springBoard.blockPage"));
-		//전체 레코드 수 카운트 하기
-		int totalRecordCount = dao.getTotalCount(paramMap);
-		
+		//페이지수 계산
 		int totalPage = (int)Math.ceil((double)totalRecordCount/pageSize);		
-		
+		//현재페이지번호 처음진입시에는 무조건1
 		int nowPage = req.getParameter("nowPage")==null ? 1 : 
 			Integer.parseInt(req.getParameter("nowPage"));
-		
+		//리스트에 출력할 게시물의 구간을 계산(select절의 between에 사용)
 		int start = (nowPage-1)*pageSize +1;
 		int end = nowPage * pageSize;
 		
 		paramMap.put("start", start);
 		paramMap.put("end", end);
-		//출력할 리스트 가져오기(페이지처리X)
+		
+		///////////////페이지처리 end///////////////////
+		//출력할 리스트 가져오기(페이지처리O)
 		ArrayList<SpringBbsDTO> listRows = dao.listPage(paramMap);
 		
 		//가상번호 계산하여 부여하기
@@ -75,6 +79,17 @@ public class ListCommand implements BbsCommandImpl{
 			virtualNum = totalRecordCount -(((nowPage-1)*pageSize)+countNum++);
 			//setter를 통해 저장
 			row.setVirtualNum(virtualNum);
+			
+			String reSpace = "";
+			if(row.getBindent()>0) {
+				//bindent의 크기만큼 반복해서 공백문자 추가
+				for(int i=0 ; i<row.getBindent() ; i++) {
+					reSpace += "&nbsp;&nbsp;";
+				}
+				//제목앞에 reply아이콘 추가 
+				row.setTitle(reSpace+"<img src='../images/re3.gif'>"
+						+ row.getTitle());
+			}
 		}
 		//리스트에 출력할 List컬렉션을 model객체에 저장한 후 뷰로 전달한다.
 		
